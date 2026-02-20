@@ -1,0 +1,89 @@
+ (cd "$(git rev-parse --show-toplevel)" && git apply --3way <<'EOF' 
+diff --git a/docs/index.html b/docs/index.html
+new file mode 100644
+index 0000000000000000000000000000000000000000..87ba74326b4a297207009c2917cd2dea1788d99b
+--- /dev/null
++++ b/docs/index.html
+@@ -0,0 +1,79 @@
++<!doctype html>
++<html lang="ru">
++  <head>
++    <meta charset="UTF-8" />
++    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
++    <title>Точное время</title>
++    <style>
++      :root {
++        color-scheme: light dark;
++        font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
++      }
++
++      body {
++        margin: 0;
++        min-height: 100vh;
++        display: grid;
++        place-items: center;
++        background: radial-gradient(circle at top, #1e293b, #0f172a 55%);
++      }
++
++      .clock {
++        text-align: center;
++        color: #e2e8f0;
++        padding: 2rem 3rem;
++        border-radius: 1rem;
++        background: rgba(15, 23, 42, 0.55);
++        box-shadow: 0 20px 40px rgba(15, 23, 42, 0.45);
++        backdrop-filter: blur(8px);
++      }
++
++      .time {
++        margin: 0;
++        font-size: clamp(2.6rem, 7vw, 5rem);
++        letter-spacing: 0.08em;
++        font-variant-numeric: tabular-nums;
++      }
++
++      .date {
++        margin-top: 0.8rem;
++        color: #cbd5e1;
++        font-size: clamp(1rem, 2.5vw, 1.35rem);
++      }
++    </style>
++  </head>
++  <body>
++    <main class="clock" aria-live="polite">
++      <h1 class="time" id="time">--:--:--</h1>
++      <p class="date" id="date">Загрузка даты…</p>
++    </main>
++
++    <script>
++      const timeEl = document.getElementById('time');
++      const dateEl = document.getElementById('date');
++
++      const timeFormatter = new Intl.DateTimeFormat('ru-RU', {
++        hour: '2-digit',
++        minute: '2-digit',
++        second: '2-digit',
++        hour12: false
++      });
++
++      const dateFormatter = new Intl.DateTimeFormat('ru-RU', {
++        weekday: 'long',
++        year: 'numeric',
++        month: 'long',
++        day: 'numeric'
++      });
++
++      function updateClock() {
++        const now = new Date();
++        timeEl.textContent = timeFormatter.format(now);
++        dateEl.textContent = dateFormatter.format(now);
++      }
++
++      updateClock();
++      setInterval(updateClock, 1000);
++    </script>
++  </body>
++</html>
+ 
+EOF
+)
